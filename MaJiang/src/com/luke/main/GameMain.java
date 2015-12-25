@@ -8,11 +8,16 @@ import java.util.List;
 import com.luke.constatint.GameConstatint;
 import com.luke.entity.Card;
 import com.luke.entity.Player;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class GameMain {
 	private Player[] players = new Player[GameConstatint.PLAYERS_TOTAL];
 	private Card[] cards = new Card[GameConstatint.CARDS_TOTAL];
- 	public static void main(String[] args) {
+	private int currentCardPointer = 0;
+	private int currentPlayerPointer = 0;
+	private int currentCardsEndPointer = 135;
+ 	
+	public static void main(String[] args) {
 		GameMain game = new GameMain();
 		game.init();
 		for(int i=0; i<game.cards.length; i++){
@@ -20,7 +25,39 @@ public class GameMain {
 		}
 		
 		//game start
-		//配牌
+		game.start();
+		
+		
+	}
+
+	private void start() {
+		boolean isFinished = false;
+		while(!isFinished){
+			players[currentPlayerPointer].pickCard(cards[currentCardPointer]);
+			currentCardPointer +=1;
+			int result = players[currentPlayerPointer].checkCard();
+			switch(result){
+				// 可以和牌
+				case 0: { 
+					isFinished = true;
+					return;
+				}
+				// 可以杠牌
+				case 1: {
+					break;
+				}
+				// 可以出牌
+				case 2: {
+					break;
+				}
+			}
+			checkOtherPlayers(currentPlayerPointer);
+		}
+	}
+	
+	//当前玩家出牌后， 检查其他玩家手牌
+	private void checkOtherPlayers(int currentPlayerPointer2) {
+		
 	}
 
 	private void init() {
@@ -37,5 +74,23 @@ public class GameMain {
 		}
 		Collections.shuffle(list);// shuffle the cards
 		list.toArray(cards);
+		
+		// 配牌
+		for (int i = 0; i < 13; i++) {
+			players[0].getCardsInHand()[i] = cards[i];
+			players[1].getCardsInHand()[i] = cards[i + 12 + 1];
+			players[2].getCardsInHand()[i] = cards[i + 12 * 2 + 1];
+			players[3].getCardsInHand()[i] = cards[i + 12 * 3 + 1];
+		}
+		
+		currentCardPointer = 13*4;
+	}
+
+	public int getCurrentCardPointer() {
+		return currentCardPointer;
+	}
+
+	public void setCurrentCardPointer(int currentCardPointer) {
+		this.currentCardPointer = currentCardPointer;
 	}
 }
