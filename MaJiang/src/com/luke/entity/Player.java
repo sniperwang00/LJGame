@@ -26,13 +26,29 @@ public class Player {
 	}
 	
 	/**
+	 * check other player's card
+	 */
+	public void checkCard(Card dropedCard) {
+		
+	}
+	
+	/**
 	 * pick a card
 	 * @return Card
 	 */
 	public void pickCard(Card card){
 		cardsInHand[cardsInHandCount + 1] = card;
 	}
-
+	
+	/**
+	 * drop a card
+	 * @return
+	 */
+	public Card dropCard() {
+		// 添加玩家输入，选择舍牌
+		int i = 0;
+		return cardsInHand[i];
+	}
 	public int getScore() {
 		return score;
 	}
@@ -64,6 +80,10 @@ public class Player {
 	public void setCardsInHandCount(int cardsInHandCount) {
 		this.cardsInHandCount = cardsInHandCount;
 	}
+
+
+
+
 
 
 	

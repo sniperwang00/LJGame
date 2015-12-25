@@ -32,6 +32,7 @@ public class GameMain {
 
 	private void start() {
 		boolean isFinished = false;
+		Card dropedCard = null;
 		while(!isFinished){
 			players[currentPlayerPointer].pickCard(cards[currentCardPointer]);
 			currentCardPointer +=1;
@@ -48,16 +49,25 @@ public class GameMain {
 				}
 				// 可以出牌
 				case 2: {
+					dropedCard = players[currentPlayerPointer].dropCard();
 					break;
 				}
+				default: break;
 			}
-			checkOtherPlayers(currentPlayerPointer);
+			
+			isFinished = checkOtherPlayers(currentPlayerPointer, dropedCard);
 		}
 	}
 	
 	//当前玩家出牌后， 检查其他玩家手牌
-	private void checkOtherPlayers(int currentPlayerPointer2) {
-		
+	private boolean checkOtherPlayers(int currentPlayerPointer, Card dropedCard) {
+		boolean result = false;
+		for(int i=0; i<4; i++){
+			if(i != currentPlayerPointer){
+				players[i].checkCard(dropedCard);
+			}
+		}
+		return result;
 	}
 
 	private void init() {
