@@ -20,7 +20,7 @@ public class Player {
 	 * 1 for 可以开杠
 	 * 2 for 出牌
 	 */
-	public Integer checkCard() {
+	public Integer checkCardAfterPicked(Card pickedCard) {
 		int result = 2;
 		return result;
 	}
@@ -28,8 +28,10 @@ public class Player {
 	/**
 	 * check other player's card
 	 */
-	public void checkCard(Card dropedCard) {
+	public Integer checkCardAfterDroped(Card dropedCard) {
+		int result = 0;
 		
+		return result;
 	}
 	
 	/**

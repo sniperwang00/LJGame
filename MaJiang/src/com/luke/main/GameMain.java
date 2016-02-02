@@ -35,8 +35,8 @@ public class GameMain {
 		Card dropedCard = null;
 		while(!isFinished){
 			players[currentPlayerPointer].pickCard(cards[currentCardPointer]);
+			int result = players[currentPlayerPointer].checkCardAfterPicked(cards[currentCardPointer]);
 			currentCardPointer +=1;
-			int result = players[currentPlayerPointer].checkCard();
 			switch(result){
 				// 可以和牌
 				case 0: { 
@@ -62,11 +62,13 @@ public class GameMain {
 	//当前玩家出牌后， 检查其他玩家手牌
 	private boolean checkOtherPlayers(int currentPlayerPointer, Card dropedCard) {
 		boolean result = false;
+		Integer[] results = new Integer[]{0, 0, 0, 0};
 		for(int i=0; i<4; i++){
 			if(i != currentPlayerPointer){
-				players[i].checkCard(dropedCard);
+				results[i] = players[i].checkCardAfterDroped(dropedCard);
 			}
 		}
+//		result = checkResults(results);
 		return result;
 	}
 
