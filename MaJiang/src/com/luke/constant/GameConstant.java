@@ -1,6 +1,6 @@
-package com.luke.constatint;
+package com.luke.constant;
 
-public class GameConstatint {
+public class GameConstant {
 	public static int PLAYERS_TOTAL = 4;
 	
 	public static int CARDS_TOTAL = 136;

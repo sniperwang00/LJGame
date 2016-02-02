@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.luke.constatint.GameConstatint;
+import com.luke.constant.GameConstant;
 import com.luke.entity.Card;
 import com.luke.entity.Player;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class GameMain {
-	private Player[] players = new Player[GameConstatint.PLAYERS_TOTAL];
-	private Card[] cards = new Card[GameConstatint.CARDS_TOTAL];
+	private Player[] players = new Player[GameConstant.PLAYERS_TOTAL];
+	private Card[] cards = new Card[GameConstant.CARDS_TOTAL];
 	private int currentCardPointer = 0;
 	private int currentPlayerPointer = 0;
 	private int currentCardsEndPointer = 135;
