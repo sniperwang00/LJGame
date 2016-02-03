@@ -30,7 +30,15 @@ public class Player {
 	 */
 	public Integer checkCardAfterDroped(Card dropedCard) {
 		int result = 0;
-		
+		if("gang"){
+			result = 4;
+		}
+		if("peng"){
+			result = 3;
+		}
+		if("chi"){
+			result = 2;
+		}
 		return result;
 	}
 	
@@ -51,6 +59,20 @@ public class Player {
 		int i = 0;
 		return cardsInHand[i];
 	}
+	
+	/**
+	 * ¸Ü
+	 * @param card
+	 */
+	public void gangCards(Card card){
+		
+	}
+	
+	public void pengCard(Card dropedCard) {
+		
+	}
+	
+	
 	public int getScore() {
 		return score;
 	}
@@ -82,6 +104,8 @@ public class Player {
 	public void setCardsInHandCount(int cardsInHandCount) {
 		this.cardsInHandCount = cardsInHandCount;
 	}
+
+
 
 
 

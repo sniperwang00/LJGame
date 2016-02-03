@@ -8,14 +8,20 @@ import java.util.List;
 import com.luke.constant.GameConstant;
 import com.luke.entity.Card;
 import com.luke.entity.Player;
+import com.luke.utils.GameUtil;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class GameMain {
 	private Player[] players = new Player[GameConstant.PLAYERS_TOTAL];
 	private Card[] cards = new Card[GameConstant.CARDS_TOTAL];
-	private int currentCardPointer = 0;
-	private int currentPlayerPointer = 0;
-	private int currentCardsEndPointer = 135;
+	private static int currentCardPointer = 0;
+	private static int currentPlayerPointer = 0;
+	private static int currentCardsEndPointer = 135;
+	private boolean isFinished = false;
+	private boolean isGang = false;
+	private boolean isPeng = false;
+	private boolean isChi = false;
+	private static Card currentDropedCard = null;
  	
 	public static void main(String[] args) {
 		GameMain game = new GameMain();
@@ -31,45 +37,78 @@ public class GameMain {
 	}
 
 	private void start() {
-		boolean isFinished = false;
-		Card dropedCard = null;
+		Card dropedCard = currentDropedCard;
 		while(!isFinished){
-			players[currentPlayerPointer].pickCard(cards[currentCardPointer]);
-			int result = players[currentPlayerPointer].checkCardAfterPicked(cards[currentCardPointer]);
-			currentCardPointer +=1;
-			switch(result){
-				// 可以和牌
-				case 0: { 
-					isFinished = true;
-					return;
+			//如果有吃碰就跳过不执行 . isPeng == true 或者isChi==true则跳过
+			if(!(!isPeng || !isChi)){
+				isPeng = false;
+				isChi = false;
+				Card pickedCard = null;
+				if(isGang){
+					pickedCard = cards[currentCardsEndPointer];
+					currentCardsEndPointer--;
+					isGang = false;
+				}else{
+					pickedCard = cards[currentCardPointer];
 				}
-				// 可以杠牌
-				case 1: {
-					break;
+				players[currentPlayerPointer].pickCard(pickedCard);
+				int result = players[currentPlayerPointer].checkCardAfterPicked(cards[currentCardPointer]);
+				currentCardPointer +=1;
+				switch(result){
+					// 可以和牌
+					case 0: { 
+						isFinished = true;
+						return;
+					}
+					// 可以杠牌
+					case 1: {
+						break;
+					}
+					// 可以出牌
+					case 2: {
+						dropedCard = players[currentPlayerPointer].dropCard();
+						break;
+					}
+					default: break;
 				}
-				// 可以出牌
-				case 2: {
-					dropedCard = players[currentPlayerPointer].dropCard();
-					break;
-				}
-				default: break;
 			}
-			
-			isFinished = checkOtherPlayers(currentPlayerPointer, dropedCard);
+			checkOtherPlayers(dropedCard);
 		}
 	}
 	
 	//当前玩家出牌后， 检查其他玩家手牌
-	private boolean checkOtherPlayers(int currentPlayerPointer, Card dropedCard) {
-		boolean result = false;
+	private void checkOtherPlayers(Card dropedCard) {
+		Integer[] maxResultAndMaxPlayer;
 		Integer[] results = new Integer[]{0, 0, 0, 0};
 		for(int i=0; i<4; i++){
 			if(i != currentPlayerPointer){
 				results[i] = players[i].checkCardAfterDroped(dropedCard);
 			}
 		}
-//		result = checkResults(results);
-		return result;
+		maxResultAndMaxPlayer = GameUtil.checkResults(results);
+		//当前出牌人
+		int maxPlayer = maxResultAndMaxPlayer[0];
+		//当前出牌类型
+		int maxResult = maxResultAndMaxPlayer[1];
+		//检查出牌类型，如果无人吃碰杠，则由下家出牌
+		if(maxResult==0){
+			currentPlayerPointer++;
+			isFinished = false;
+		}else if(maxResult == 4){
+			currentPlayerPointer = maxPlayer;
+			//杠牌
+			players[currentCardPointer].gangCards(dropedCard);
+			isFinished = false;
+			isGang = true;
+			
+		}else if(maxResult == 3){
+			currentPlayerPointer = maxPlayer;
+			players[currentPlayerPointer].pengCard(dropedCard);
+			currentDropedCard = players[currentPlayerPointer].dropCard();
+			currentPlayerPointer++;
+			isPeng = true;
+			isFinished = false;
+		}
 	}
 
 	private void init() {
