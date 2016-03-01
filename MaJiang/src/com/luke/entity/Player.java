@@ -30,7 +30,7 @@ public class Player {
 	 */
 	public Integer checkCardAfterDroped(Card dropedCard) {
 		int result = 0;
-		if("gang"){
+		if(true){
 			result = 4;
 		}
 		if("peng"){
@@ -67,11 +67,21 @@ public class Player {
 	public void gangCards(Card card){
 		
 	}
-	
+	/**
+	 * Åö
+	 * @param card
+	 */
 	public void pengCard(Card dropedCard) {
 		
 	}
-	
+	/**
+	 * ³Ô
+	 * @param card
+	 */
+	public void chiCard(Card dropedCard) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public int getScore() {
 		return score;
@@ -104,14 +114,4 @@ public class Player {
 	public void setCardsInHandCount(int cardsInHandCount) {
 		this.cardsInHandCount = cardsInHandCount;
 	}
-
-
-
-
-
-
-
-
-	
-	
 }

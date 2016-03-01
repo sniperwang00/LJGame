@@ -33,7 +33,8 @@ public class GameMain {
 		//game start
 		game.start();
 		
-		
+		//game end
+		game.end();
 	}
 
 	private void start() {
@@ -76,6 +77,11 @@ public class GameMain {
 		}
 	}
 	
+	private void end() {
+		System.out.println("玩家" + players[currentPlayerPointer].getName() + "和牌");
+	}
+
+	
 	//当前玩家出牌后， 检查其他玩家手牌
 	private void checkOtherPlayers(Card dropedCard) {
 		Integer[] maxResultAndMaxPlayer;
@@ -94,20 +100,30 @@ public class GameMain {
 		if(maxResult==0){
 			currentPlayerPointer++;
 			isFinished = false;
-		}else if(maxResult == 4){
+		}else if(maxResult == 3){
 			currentPlayerPointer = maxPlayer;
 			//杠牌
 			players[currentCardPointer].gangCards(dropedCard);
 			isFinished = false;
 			isGang = true;
 			
-		}else if(maxResult == 3){
+		}else if(maxResult == 2){
 			currentPlayerPointer = maxPlayer;
 			players[currentPlayerPointer].pengCard(dropedCard);
 			currentDropedCard = players[currentPlayerPointer].dropCard();
 			currentPlayerPointer++;
 			isPeng = true;
 			isFinished = false;
+		}else if(maxResult == 1){
+			currentPlayerPointer = maxPlayer;
+			players[currentPlayerPointer].chiCard(dropedCard);
+			currentDropedCard = players[currentPlayerPointer].dropCard();
+			currentPlayerPointer++;
+			isChi = true;
+			isFinished = false;
+		}else if(maxResult == 4){
+			currentPlayerPointer = maxPlayer;
+			isFinished = true;
 		}
 	}
 
